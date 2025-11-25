@@ -13,15 +13,36 @@ animals.forEach(animal => {
 });
 
 // Web Speech API を使った音声合成関数（テスト用）
-function speakText(text) {
-    // 音声合成の準備
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ja-JP'; // 日本語
-    utterance.rate = 1.0;     // 速度（1.0が標準）
-    utterance.pitch = 1.5;    // 音の高さ（高め）
-    // 音声を再生
-    speechSynthesis.speak(utterance);
-    return utterance;
+// function speakText(text) {
+//     // 音声合成の準備
+//     const utterance = new SpeechSynthesisUtterance(text);
+//     utterance.lang = 'ja-JP'; // 日本語
+//     utterance.rate = 1.0;     // 速度（1.0が標準）
+//     utterance.pitch = 1.5;    // 音の高さ（高め）
+//     // 音声を再生
+//     speechSynthesis.speak(utterance);
+//     return utterance;
+// }
+
+// 音声ファイルをプリロード
+const audioCache = {};
+
+function preloadSounds() {
+    animals.forEach(animal => {
+        const audio = new Audio(`./assets/sounds/${animal.id}.mp3`);
+        audio.preload = 'auto';
+        audioCache[animal.id] = audio;
+    });
+    console.log('音声ファイルのプリロードが完了しました');
+}
+
+function playSound(animalId) {
+    const audio = audioCache[animalId];
+    if (audio) {
+        audio.currentTime = 0; // 最初から再生
+        audio.play();
+        return audio;
+    }
 }
 
 // 動物カードをタップしたときの処理
@@ -39,13 +60,13 @@ function handleAnimalTouch(animalId, soundText) {
     console.log(`${animalId} の音声を再生開始`);
     
     // 音声を再生
-    const utterance = speakText(soundText);
+    const audio = playSound(animalId);
     
-    // 音声再生が終わったらフラグを下ろす
-    utterance.onend = function() {
+    // イベントリスナーを addEventListener で設定
+    audio.addEventListener('ended', function() {
         playingStates[animalId] = false;
         console.log(`${animalId} の音声再生が終了`);
-    };
+    }, { once: true }); // once: true で1回だけ実行
     
     // カードにアニメーションを追加（後で実装）
     const card = document.getElementById(animalId);
@@ -92,7 +113,7 @@ function renderAnimals(page) {
         
         // クリックイベントを設定
         card.addEventListener('click', function() {
-            handleAnimalTouch(animal.id, animal.sound);
+            handleAnimalTouch(animal.id);
         });
 
         // グリッドにカードを追加
@@ -124,7 +145,10 @@ function prevPage() {
 // ページ読み込み完了後に実行
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMの読み込みが完了しました');
-    
+
+    // 音声ファイルをプリロード
+    preloadSounds();
+
     // 初期ページ（ページ1）をレンダリング
     renderAnimals(currentPage);
     
