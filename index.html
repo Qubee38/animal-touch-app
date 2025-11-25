@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動物タッチ&サウンド</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-left">
+            <span class="icon">🔊</span>
+            <span>音量</span>
+        </div>
+        <div class="header-right">
+            <span>設定</span>
+            <span class="icon">⚙️</span>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+        <div class="animals-grid">
+            <!-- 動物カード: 犬 -->
+            <div class="animal-card" id="dog">
+                <div class="animal-emoji">🐶</div>
+                <div class="animal-name">わんわん</div>
+            </div>
+
+            <!-- 動物カード: 猫 -->
+            <div class="animal-card" id="cat">
+                <div class="animal-emoji">🐱</div>
+                <div class="animal-name">にゃーにゃー</div>
+            </div>
+
+            <!-- 動物カード: 牛 -->
+            <div class="animal-card" id="cow">
+                <div class="animal-emoji">🐮</div>
+                <div class="animal-name">もーもー</div>
+            </div>
+
+            <!-- 動物カード: 豚 -->
+            <div class="animal-card" id="pig">
+                <div class="animal-emoji">🐷</div>
+                <div class="animal-name">ぶーぶー</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <button class="nav-button">← 前のページ</button>
+        <div class="page-indicator">ページ 1 / 2</div>
+        <button class="nav-button">次のページ →</button>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

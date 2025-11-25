@@ -1,0 +1,141 @@
+/* リセットCSS - ブラウザのデフォルトスタイルをリセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* body全体の設定 */
+body {
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+    background: #fafafa;
+    overflow: hidden; /* スクロールを無効化 */
+    width: 100vw;  /* 画面の幅100% */
+    height: 100vh; /* 画面の高さ100% */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ヘッダー */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left,
+.header-right {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-size: 16px;
+}
+
+.icon {
+    font-size: 24px;
+}
+
+/* メインコンテンツ */
+.main-content {
+    flex: 1; /* 残りのスペースを全て使う */
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 動物グリッド */
+.animals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2列に変更 */
+    grid-template-rows: 1fr 1fr;    /* 2行に変更 */
+    gap: 40px;
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
+}
+
+/* 動物カード */
+.animal-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.animal-card:hover {
+    transform: scale(1.1);
+}
+
+/* 動物の絵文字 */
+.animal-emoji {
+    font-size: 160px;
+    line-height: 1;
+}
+
+/* 動物の名前 */
+.animal-name {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2d3748;
+}
+
+/* フッター */
+.footer {
+    background: #f7fafc;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 3px solid #e2e8f0;
+}
+
+/* ナビゲーションボタン */
+.nav-button {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background: #5a67d8;
+}
+
+/* ページインジケーター */
+.page-indicator {
+    font-size: 18px;
+    color: #4a5568;
+    font-weight: bold;
+}
+
+/* タップ時のアニメーション */
+@keyframes gentle-bounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animal-card.touched {
+    animation: gentle-bounce 0.4s ease-in-out;
+}
