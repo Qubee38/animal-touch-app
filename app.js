@@ -125,13 +125,97 @@ function prevPage() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMの読み込みが完了しました');
     
-    // 最初のページをレンダリング
+    // 初期ページ（ページ1）をレンダリング
     renderAnimals(currentPage);
-
+    
     // ナビゲーションボタンにイベントリスナーを設定
     const navButtons = document.querySelectorAll('.nav-button');
-    navButtons[0].addEventListener('click', prevPage);  // 前のページ
-    navButtons[1].addEventListener('click', nextPage);  // 次のページ
-
+    navButtons[0].addEventListener('click', prevPage);
+    navButtons[1].addEventListener('click', nextPage);
+    
+    // 設定画面の要素を取得
+    const settingsModal = document.getElementById('settingsModal');
+    const backButton = document.getElementById('backButton');
+    const settingsButton = document.querySelector('.header-right');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeValue = document.getElementById('volumeValue');
+    const showNamesCheckbox = document.getElementById('showNames');
+    
+    // 長押しタイマー用の変数
+    let longPressTimer;
+    
+    // 設定ボタンの長押し検出（1秒）
+    settingsButton.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        longPressTimer = setTimeout(function() {
+            openSettings();
+        }, 1000); // 1秒の長押し
+    });
+    
+    settingsButton.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        clearTimeout(longPressTimer);
+    });
+    
+    settingsButton.addEventListener('touchcancel', function(e) {
+        e.preventDefault();
+        clearTimeout(longPressTimer);
+    });
+    
+    // マウス操作（PC用）
+    settingsButton.addEventListener('mousedown', function() {
+        longPressTimer = setTimeout(function() {
+            openSettings();
+        }, 1000);
+    });
+    
+    settingsButton.addEventListener('mouseup', function() {
+        clearTimeout(longPressTimer);
+    });
+    
+    settingsButton.addEventListener('mouseleave', function() {
+        clearTimeout(longPressTimer);
+    });
+    
+    // 設定画面を開く
+    function openSettings() {
+        console.log('設定画面を開きます');
+        settingsModal.classList.add('show');
+    }
+    
+    // 設定画面を閉じる
+    function closeSettings() {
+        console.log('設定画面を閉じます');
+        settingsModal.classList.remove('show');
+    }
+    
+    // 戻るボタン
+    backButton.addEventListener('click', closeSettings);
+    
+    // モーダルの背景をクリックしても閉じる
+    settingsModal.addEventListener('click', function(e) {
+        if (e.target === settingsModal) {
+            closeSettings();
+        }
+    });
+    
+    // 音量スライダーの変更
+    volumeSlider.addEventListener('input', function() {
+        const volume = this.value;
+        volumeValue.textContent = volume;
+        // 音量を実際に適用（Web Speech APIの音量調整）
+        speechSynthesis.cancel(); // 再生中の音声をキャンセル
+        console.log(`音量を ${volume}% に設定しました`);
+    });
+    
+    // 名前表示の切り替え
+    showNamesCheckbox.addEventListener('change', function() {
+        const animalNames = document.querySelectorAll('.animal-name');
+        animalNames.forEach(name => {
+            name.style.display = this.checked ? 'block' : 'none';
+        });
+        console.log(`名前表示: ${this.checked ? 'ON' : 'OFF'}`);
+    });
+    
     console.log('アプリの初期化が完了しました');
 });

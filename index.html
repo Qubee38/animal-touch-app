@@ -33,6 +33,47 @@
         <button class="nav-button">次のページ →</button>
     </footer>
 
+    <!-- 設定画面（初期状態は非表示） -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <header class="settings-header">
+                <button class="back-button" id="backButton">← 戻る</button>
+                <h2>設定</h2>
+                <div style="width: 80px;"></div> <!-- 中央揃え用 -->
+            </header>
+            
+            <div class="settings-body">
+                <!-- 音量調整 -->
+                <div class="settings-item">
+                    <h3>🔊 音量調整</h3>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="70" class="volume-slider">
+                    <p class="volume-label">現在: <span id="volumeValue">70</span>%</p>
+                </div>
+                
+                <!-- 表示設定 -->
+                <div class="settings-item">
+                    <h3>📱 表示設定</h3>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="showNames" checked>
+                        <span>動物の名前を表示する</span>
+                    </label>
+                </div>
+                
+                <!-- アプリ情報 -->
+                <div class="settings-item">
+                    <h3>ℹ️ アプリ情報</h3>
+                    <p>バージョン: 1.0.0</p>
+                    <p>動物の数: 8種類（2ページ）</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="animals.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
     <script src="animals.js"></script>
     <script src="app.js"></script>
 </body>
