@@ -1,13 +1,16 @@
 // アプリの初期化
 console.log('アプリが起動しました');
 
+// 現在のページ番号
+let currentPage = 1;
+
 // 音声再生中かどうかを管理するオブジェクト
-const playingStates = {
-    dog: false,
-    cat: false,
-    cow: false,
-    pig: false
-};
+const playingStates = {};
+
+// 全動物の再生状態を初期化
+animals.forEach(animal => {
+    playingStates[animal.id] = false;
+});
 
 // Web Speech API を使った音声合成関数（テスト用）
 function speakText(text) {
@@ -16,10 +19,8 @@ function speakText(text) {
     utterance.lang = 'ja-JP'; // 日本語
     utterance.rate = 1.0;     // 速度（1.0が標準）
     utterance.pitch = 1.5;    // 音の高さ（高め）
-    
     // 音声を再生
     speechSynthesis.speak(utterance);
-    
     return utterance;
 }
 
@@ -56,33 +57,81 @@ function handleAnimalTouch(animalId, soundText) {
     }, 400);
 }
 
+function renderAnimals(page) {
+    console.log(`ページ ${page} をレンダリング`);
+
+    // 指定されたページの動物のみをフィルタリング
+    const pageAnimals = animals.filter(animal => animal.page === page);
+
+    // グリッドコンテナを取得
+    const grid = document.querySelector('.animals-grid');
+
+    // 既存の内容をクリア
+    grid.innerHTML = '';
+    
+    // 各動物のカードを生成
+    pageAnimals.forEach(animal => {
+        // カード要素を作成
+        const card = document.createElement('div');
+        card.className = 'animal-card';
+        card.id = animal.id;
+
+        // 絵文字要素を作成
+        const emoji = document.createElement('div');
+        emoji.className = 'animal-emoji';
+        emoji.textContent = animal.emoji;
+
+        // 名前要素を作成
+        const name = document.createElement('div');
+        name.className = 'animal-name';
+        name.textContent = animal.name;
+
+        // カードに要素を追加
+        card.appendChild(emoji);
+        card.appendChild(name);
+        
+        // クリックイベントを設定
+        card.addEventListener('click', function() {
+            handleAnimalTouch(animal.id, animal.sound);
+        });
+
+        // グリッドにカードを追加
+        grid.appendChild(card);
+    });
+
+    // ページインジゲーターを追加
+    updatePageIndicator();
+}
+
+// ページインジゲーターを更新する関数
+function updatePageIndicator() {
+    const indicator = document.querySelector('.page-indicator');
+    indicator.textContent = `ページ ${currentPage} / 2`;
+}
+
+// 次のページへ移動
+function nextPage() {
+    currentPage = currentPage === 2 ? 1 : currentPage + 1;
+    renderAnimals(currentPage);
+}
+
+// 前のページへ移動
+function prevPage() {
+    currentPage = currentPage === 1 ? 2 : currentPage - 1;
+    renderAnimals(currentPage);
+}
+
 // ページ読み込み完了後に実行
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMの読み込みが完了しました');
     
-    // 犬のカード
-    const dogCard = document.getElementById('dog');
-    dogCard.addEventListener('click', function() {
-        handleAnimalTouch('dog', 'ワンワン');
-    });
-    
-    // 猫のカード
-    const catCard = document.getElementById('cat');
-    catCard.addEventListener('click', function() {
-        handleAnimalTouch('cat', 'ニャーニャー');
-    });
+    // 最初のページをレンダリング
+    renderAnimals(currentPage);
 
-    // 牛のカード
-    const cowCard = document.getElementById('cow');
-    cowCard.addEventListener('click', function() {
-        handleAnimalTouch('cow', 'モーモー');
-    });
+    // ナビゲーションボタンにイベントリスナーを設定
+    const navButtons = document.querySelectorAll('.nav-button');
+    navButtons[0].addEventListener('click', prevPage);  // 前のページ
+    navButtons[1].addEventListener('click', nextPage);  // 次のページ
 
-    // 豚のカード
-    const pigCard = document.getElementById('pig');
-    pigCard.addEventListener('click', function() {
-        handleAnimalTouch('pig', 'ブーブー');
-    });
-
-    console.log('すべての動物カードにイベントリスナーを設定しました');
+    console.log('アプリの初期化が完了しました');
 });
